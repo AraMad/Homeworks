@@ -21,14 +21,14 @@ int main(int argc, char * argv[])
     //printf("%s\n", crypt("hypo", "50")); 50T6zjKyyx4dw
     
     char password[LENGHT_OF_PASSWORD];
-    
+
    for (int i = 0; i < AMOUNT_OF_LETTERS; i++)
     {
         password[0] = i + DIFFERENCE;
         for (int l = 0; l < AMOUNT_OF_LETTERS; l++)
         {
             password[1] = i + DIFFERENCE;
-            if (isPasswordFound(password, argv[1][0]))
+            if (isPasswordFound(password, argv[1]))
             {
                 return 0;
             }
@@ -49,6 +49,7 @@ bool isPasswordFound(char *password, char *hash)
         for (int l = 0; l < AMOUNT_OF_LETTERS; l++)
         {
             password[3] = i + DIFFERENCE;
+            printf("%s\n", password);
             if (!strcmp(crypt(password, "50"),  hash))
             {
                 printf("%s\n", password);
