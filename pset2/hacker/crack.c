@@ -46,7 +46,7 @@ bool isPasswordFound(char *hash)
         for (int l = 0; l < AMOUNT_OF_LETTERS; l++)
         {
             password_low[1] = l + DIFFERENCE_LOW;
-            password_up[1] = i + DIFFERENCE_UP;
+            password_up[1] = l + DIFFERENCE_UP;
             for (int k = 0; k < AMOUNT_OF_LETTERS; k++)
             {
                 password_low[2] = k + DIFFERENCE_LOW;
