@@ -15,38 +15,39 @@ int main(int argc, string argv[])
     int k = 0;
     int len_key = strlen(argv[1]);
 
-    for (int i = 0; i < len_key; i++)
+    //modify a key, if key contain non-alphabetical characters return ERORR
+    for (int i=0;i<len_key;i++)
     {
         if (isalpha(argv[1][i]))
         {
             if (isupper(argv[1][i]))
             {
                 argv[1][i]-=65;
-            } else 
+            } else
             {
                 argv[1][i]-=97;
             }
         } else
         {
-            printf("Erorr\n");
-            return 1;
+            printf("Erorr\n");return 1;
         }
     }
-    
+
+    printf("plaintext: ");
     string text = GetString();
     
+    printf("ciphertext: ");
     for (int i=0, len=strlen(text);i<len;i++)
     {
-        if(isalpha(text[i])) 
+        if(isalpha(text[i]))
         {
-            if (isupper(text[i])) 
+            if (isupper(text[i]))
             {
                 printf("%c", (((text[i]-64)+(argv[1][k]))%26)+64);
                 if(k<=len_key-2)
                 {
                     k++;
-                }
-                else
+                } else
                 {
                     k = 0;
                 }
@@ -57,20 +58,19 @@ int main(int argc, string argv[])
                 if(k<=len_key-2)
                 {
                     k++;
-                }
-                else
+                } else
                 {
                     k = 0;
                 }
             }
         }
-        else 
+        else
         {
             printf("%c", text[i]);
-        }  
+        }
     }
-    
-    printf("\n");
-    
-    return 0;
+
+printf("\n");
+
+return 0;
 }
