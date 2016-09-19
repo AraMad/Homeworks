@@ -4,6 +4,7 @@
 #include <cs50.h>
 #include <ctype.h>
 
+//function that cipher text
 char *crypt(char *text, int key);
 
 int main(int argc, string argv[])
