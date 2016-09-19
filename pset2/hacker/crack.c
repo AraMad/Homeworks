@@ -3,12 +3,11 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <ctype.h>
 #include <cs50.h>
 
-const int AMOUNT_OF_LETTERS = 26;
-const int LENGHT_OF_PASSWORD = 5;
-const int DIFFERENCE_LOW = 97;
-const int DIFFERENCE_UP = 65;
+const int LENGHT_OF_PASSWORD = 4;
+
 bool isPasswordFound(char *hash);
 
 int main(int argc, char * argv[])
@@ -18,8 +17,6 @@ int main(int argc, char * argv[])
         printf("Erorr\n");
         return 1;
     }
-    
-    //printf("%s\n", crypt("hypo", "50")); 50T6zjKyyx4dw
     
     if (isPasswordFound(argv[1]))
     {
@@ -33,36 +30,41 @@ int main(int argc, char * argv[])
 
 bool isPasswordFound(char *hash)
 {
-    
-    char password_low[LENGHT_OF_PASSWORD];
-    char password_up[LENGHT_OF_PASSWORD];
-    password_low[4] = '\0';
-    password_up[4] = '\0';
+    char salt[2] = {hash[0], hash[1]};
+    char password[LENGHT_OF_PASSWORD];
+    char buf[3];
 
-   for (int i = 0; i < AMOUNT_OF_LETTERS; i++)
+   for (int i = 65; i < 123; i++)
     {
-        password_low[0] = i + DIFFERENCE_LOW;
-        password_up[0] = i + DIFFERENCE_UP;
-        for (int l = 0; l < AMOUNT_OF_LETTERS; l++)
+        if (i == 91) {i = 97;}
+        password[0] = i;
+        for (int l = 65; l < 123; l++)
         {
-            password_low[1] = l + DIFFERENCE_LOW;
-            password_up[1] = l + DIFFERENCE_UP;
-            for (int k = 0; k < AMOUNT_OF_LETTERS; k++)
-            {
-                password_low[2] = k + DIFFERENCE_LOW;
-                password_up[2] = k + DIFFERENCE_UP;
-                for (int j = 0; j < AMOUNT_OF_LETTERS; j++)
-                {
-                    password_low[3] = j + DIFFERENCE_LOW;
-                    password_up[3] = j + DIFFERENCE_UP;
-                    if (!strcmp(crypt(password_low, "50"),  hash))
+            if (l == 91) {l = 97;}
+            password[1] = l;
+            buf[0] = password[0]; buf[1] = password[1]; buf[2] = '\0';
+            if (!strcmp(crypt(buf, salt),  hash))
                     {
-                         printf("%s\n", password_low);
+                         printf("%s\n", buf);
                          return 1;
                     }
-                    if (!strcmp(crypt(password_up, "50"),  hash))
+            for (int k = 65; k < 123; k++)
+            {
+                if (k == 91) {k = 97;}
+                password[2] = k;
+                buf[0] = password[0]; buf[1] = password[1]; buf[2] = password[2];
+                if (!strcmp(crypt(buf, salt),  hash))
                     {
-                         printf("%s\n", password_up);
+                         printf("%s\n", buf);
+                         return 1;
+                    }
+                for (int j = 65; j < 123; j++)
+                {
+                    if (j == 91) {j = 97;}
+                    password[3] = j;
+                    if (!strcmp(crypt(password, salt),  hash))
+                    {
+                         printf("%s\n", password);
                          return 1;
                     }
                 }
