@@ -4,6 +4,8 @@
 #include <cs50.h>
 #include <ctype.h>
 
+char *crypt(char *text, int key);
+
 int main(int argc, string argv[])
 {
     if (argc!=2)
@@ -12,13 +14,19 @@ int main(int argc, string argv[])
         return 1;
     }
     
-    //
+    //modify a key for more comfortable usage
     int key = atoi(argv[1]) <= 26 ? (atoi(argv[1])):(atoi(argv[1])%26);
     
     printf("plaintext: ");
     string text = GetString();
 
-    printf("ciphertext: ");
+    printf("ciphertext: %s\n", crypt(text, key));
+    
+    return 0;
+}
+
+char *crypt(char *text, int key)
+{
     
     for (int i = 0, len = strlen(text); i < len; i++)
     {
@@ -26,21 +34,13 @@ int main(int argc, string argv[])
         {
             if (isupper(text[i]))
             {
-                printf("%c", (((text[i]-64)+key)%26)+64);
-                
+                text[i] = (((text[i]-64)+key)%26)+64;
             }
             else
             {
-                printf("%c", (((text[i]-96)+key)%26)+96);
-                
+                text[i] =  (((text[i]-96)+key)%26)+96;
             }
         }
-        else 
-        {
-            printf("%c", text[i]);
-        }
     }
-    
-    printf("\n");
-    return 0;
+    return text;
 }
