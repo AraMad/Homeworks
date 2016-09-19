@@ -12,7 +12,7 @@ int main(void)
         name = GetString();
     } while (name == NULL);
     
-    char buf[4] = "\n";
+    char buf[3] ;
     int y = 0;
     
     for (int i = 0, n = strlen(name); i < n; i++) 
