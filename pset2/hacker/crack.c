@@ -6,9 +6,14 @@
 #include <ctype.h>
 #include <cs50.h>
 
-const int LENGHT_OF_PASSWORD = 4;
-
+// max lenght of password - 4 symbols
+const int LENGHT_OF_PASSWORD = 5;
+// iterates all possible combinations and compares theirs hashs with hash from parameters
+// prints them and return true if found password
+// else - false
 bool isPasswordFound(char *hash);
+// print password
+void printPassword(char *password);
 
 int main(int argc, char * argv[])
 {
@@ -30,46 +35,86 @@ int main(int argc, char * argv[])
 
 bool isPasswordFound(char *hash)
 {
-    char salt[2] = {hash[0], hash[1]};
+    char salt[3] = {hash[0], hash[1], '\0'};
     char password[LENGHT_OF_PASSWORD];
-    char buf[3];
+    password[4] = '\0';
+    char buf[4];
+    buf[3] = '\0';
 
-   for (int i = 65; i < 123; i++)
+   for (int i = 'A'; i <= 'z'; i++)
     {
-        if (i == 91) {i = 97;}
-        password[0] = i;
-        for (int l = 65; l < 123; l++)
+        if (i == ('Z'+1))
         {
-            if (l == 91) {l = 97;}
-            password[1] = l;
-            buf[0] = password[0]; buf[1] = password[1]; buf[2] = '\0';
-            if (!strcmp(crypt(buf, salt),  hash))
-                    {
-                         printf("%s\n", buf);
-                         return 1;
-                    }
-            for (int k = 65; k < 123; k++)
+            i = 'a';
+        }
+        
+        password[0] = i;
+        
+        for (int l = 'A'; l < 'z'; l++)
+        {
+            if (l == ('Z'+1))
             {
-                if (k == 91) {k = 97;}
-                password[2] = k;
-                buf[0] = password[0]; buf[1] = password[1]; buf[2] = password[2];
+                l = 'a';
+            }
+            
+            password[1] = l;
+            
+            // check passwords of two characters
+            {
+                buf[0] = password[0];
+                buf[1] = password[1];
+                buf[2] = '\0';
                 if (!strcmp(crypt(buf, salt),  hash))
                     {
-                         printf("%s\n", buf);
-                         return 1;
+                        printPassword(buf);
+                        return 1;
                     }
-                for (int j = 65; j < 123; j++)
+            }
+            
+            for (int k = 'A'; k < 'z'; k++)
+            {
+                if (k == ('Z'+1))
                 {
-                    if (j == 91) {j = 97;}
+                    k = 'a';
+                }
+                
+                password[2] = k;
+                
+                // check passwords of tree characters
+                {
+                    buf[0] = password[0];
+                    buf[1] = password[1];
+                    buf[2] = password[2];
+                    if (!strcmp(crypt(buf, salt),  hash))
+                    {
+                        printPassword(buf);
+                        return 1;
+                    }
+                }
+                
+                for (int j = 'A'; j < 'z'; j++)
+                {
+                    if (j == ('Z'+1))
+                    {
+                        j = 'a';
+                    }
+                    
                     password[3] = j;
+                    
+                    // check passwords of four characters
                     if (!strcmp(crypt(password, salt),  hash))
                     {
-                         printf("%s\n", password);
-                         return 1;
+                        printPassword(password);
+                        return 1;
                     }
                 }
             }
         }
     }
     return 0;
+}
+
+void printPassword(char *password)
+{
+    printf("%s\n", password);
 }
