@@ -37,7 +37,8 @@ void draw(void);
 bool move(int tile);
 bool won(void);
 
-bool swap(short x_tile, y_tile, x_zero, y_zero);
+bool swap(short int* x_tile, short int* y_tile, short int* x_zero, short int* y_zero);
+void find_positions(short int* x_tile, short int* y_tile, short int* x_zero, short int* y_zero, int tile);
 
 int main(int argc, string argv[])
 {
@@ -158,15 +159,17 @@ void greet(void)
  */
 void init(void)
 {
-    int k = (d*d-1);
+    int num = (d*d-1);
+    
     for (int i = 0; i < d; i++)
     {
         for(int j = 0; j < d; j++)
         {
-            board[i][j] = k;
-            k--;
+            board[i][j] = num;
+            num--;
         }
     }
+    
     if ((d % 2) == 0)
     {
         board[d-1][d-2] = 2;
@@ -182,6 +185,7 @@ void draw(void)
     for (int i = 0; i < d; i++)
     {
         printf("| ");
+        
         for(int j = 0; j < d; j++)
         {
             if (!board[i][j])
@@ -210,35 +214,20 @@ void draw(void)
  */
 bool move(int tile)
 {
-    short x_of_zero = 0;
-    short y_of_zero = 0;
-    short x_of_tile = 0;
-    short y_of_tile = 0;
+    short int x_of_zero = 0;
+    short int y_of_zero = 0;
+    short int x_of_tile = 0;
+    short int y_of_tile = 0;
     
+    //checks that tile is in board(it less that max possible value)
     if (tile >= (d*d))
     {
         return 0;
     }
     
-    for (int i = 0; i < d; i++)
-    {
-        for(int j = 0; j < d; j++)
-        {
-            if (board[i][j] == tile)
-            {
-                x_of_tile = i;
-                y_of_tile = j;
-            }
-            if (board[i][j] == 0)
-            {
-                x_of_zero = i;
-                y_of_zero = j;
-            }
-            
-        }
-    }
+    find_positions(&x_of_tile, &y_of_tile, &x_of_zero, &y_of_zero, tile);
     
-    return swap(x_of_tile, y_of_tile, x_of_zero, y_of_zero);
+    return swap(&x_of_tile, &y_of_tile, &x_of_zero, &y_of_zero);
 }
 
 /**
@@ -247,14 +236,20 @@ bool move(int tile)
  */
 bool won(void)
 {
-    int k = (d*d-1);
-    for (int i = d-1; i >= 0; i--)
+    int num = 1;
+    
+    for (int i = 0; i < d; i++)
     {
-        for(int j = d-1; j >= 0; j--)
+        for(int j = 0; j < d; j++)
         {
-            if (board[i][j] == k)
+            if (i == d-1 && j == d-1)
             {
-                k--;
+                num = 0;
+            }
+            
+            if (board[i][j] == num)
+            {
+                num++;
             }
             else
             {
@@ -265,7 +260,50 @@ bool won(void)
     return 1;
 }
 
-bool swap(short x_tile, y_tile, x_zero, y_zero);
+// swaps tile with zero if it possible, return true if tile swaped successfully
+bool swap(short int* x_tile, short int* y_tile, short int* x_zero, short int* y_zero)
 {
-    //TODO
+    if (*x_zero == *x_tile)
+    {
+        if ((*y_zero == (*y_tile-1)) || (*y_zero == (*y_tile+1)))
+        {
+            board[*x_zero][*y_zero] = board[*x_tile][*y_tile];
+            board[*x_tile][*y_tile] = 0;
+            return 1;
+        }
+    }
+    
+    if (*y_zero == *y_tile)
+    {
+        if ((*x_zero == (*x_tile-1)) || (*x_zero == (*x_tile+1)))
+        {
+            board[*x_zero][*y_zero] = board[*x_tile][*y_tile];
+            board[*x_tile][*y_tile] = 0;
+            return 1;
+        }
+    }
+    
+    return 0;
+}
+
+// finds position of tile and zero
+void find_positions(short int* x_tile, short int* y_tile, short int* x_zero, short int* y_zero, int tile)
+{
+    for (int i = 0; i < d; i++)
+    {
+        for(int j = 0; j < d; j++)
+        {
+            if (board[i][j] == tile)
+            {
+                *x_tile = i;
+                *y_tile = j;
+            }
+            if (board[i][j] == 0)
+            {
+                *x_zero = i;
+                *y_zero = j;
+            }
+            
+        }
+    }
 }
