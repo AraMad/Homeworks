@@ -1,0 +1,34 @@
+#!/usr/bin/env python3
+
+import sys
+from analyzer import Analyzer
+import helpers
+from termcolor import colored
+
+# ensure proper usage
+if len(sys.argv) != 2:
+        sys.exit("Usage: ./tweets @screen_name")
+
+# get screen_name's tweets
+tweets = helpers.get_user_timeline(sys.argv[1], 50)
+
+# instantiate analyzer
+analyzer = Analyzer()
+
+# checking 50 tweets, if unable to get tweets print Error
+try:
+    for tweet in tweets:
+        tweet = tweet.split(" ")
+        score = 0
+        # analyze one tweet word by word
+        for word in tweet:
+            score += analyzer.analyze(word)
+        # print score of tweet and tweet
+        if score > 0.0:
+            print(colored(score, "green"), colored(' '.join(tweet), "green"))
+        elif score < 0.0:
+            print(colored(score, "red"), colored(' '.join(tweet), "red"))
+        else:
+            print(colored(score, "yellow"), colored(' '.join(tweet), "yellow"))
+except TypeError:
+    sys.exit("Error")
