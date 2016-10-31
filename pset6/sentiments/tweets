@@ -18,17 +18,14 @@ analyzer = Analyzer()
 # checking 50 tweets, if unable to get tweets print Error
 try:
     for tweet in tweets:
-        tweet = tweet.split(" ")
-        score = 0
-        # analyze one tweet word by word
-        for word in tweet:
-            score += analyzer.analyze(word)
+        # analyze one tweet
+        score = analyzer.analyze(tweet)
         # print score of tweet and tweet
         if score > 0.0:
-            print(colored(score, "green"), colored(' '.join(tweet), "green"))
+            print(colored(score, "green"), colored(tweet, "green"))
         elif score < 0.0:
-            print(colored(score, "red"), colored(' '.join(tweet), "red"))
+            print(colored(score, "red"), colored(tweet, "red"))
         else:
-            print(colored(score, "yellow"), colored(' '.join(tweet), "yellow"))
+            print(colored(score, "yellow"), colored(tweet, "yellow"))
 except TypeError:
     sys.exit("Error")
