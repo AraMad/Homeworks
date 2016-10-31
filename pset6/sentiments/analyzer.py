@@ -23,9 +23,12 @@ class Analyzer():
         
     def analyze(self, text):
         """Analyze text for sentiment, returning its score."""
+        text = text.split(" ")
         score = 0
-        if Analyzer.pos_words.count(text+"\n"):
-            score += 1
-        elif Analyzer.neg_words.count(text+"\n"):
-            score -= 1
+        # analyze text word by word
+        for word in text:
+            if Analyzer.pos_words.count(word+"\n"):
+                score += 1
+            elif Analyzer.neg_words.count(word+"\n"):
+                score -= 1
         return score
