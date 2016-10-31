@@ -27,11 +27,8 @@ def search():
     
     # checking 100 tweets 
     for tweet in tweets:
-        tweet = tweet.split(" ")
-        score = 0
-        # analyze one tweet word by word
-        for word in tweet:
-            score += analyzer.analyze(word)
+        # analyze one tweet
+        score = analyzer.analyze(tweet)
         # count negative positive and neutral tweets
         if score > 0.0:
             positive += 1
