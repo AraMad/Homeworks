@@ -1,5 +1,4 @@
 import nltk
-#from nltk.tokenize import TweetTokenizer
 
 class Analyzer():
     """Implements sentiment analysis."""
