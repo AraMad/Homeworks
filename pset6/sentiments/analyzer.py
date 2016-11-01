@@ -1,5 +1,5 @@
 import nltk
-from nltk.tokenize import TweetTokenizer
+#from nltk.tokenize import TweetTokenizer
 
 class Analyzer():
     """Implements sentiment analysis."""
@@ -24,7 +24,7 @@ class Analyzer():
         
     def analyze(self, text):
         """Analyze text for sentiment, returning its score."""
-        tokenizer = TweetTokenizer()
+        tokenizer = nltk.tokenize.TweetTokenizer()
         text = tokenizer.tokenize(text)
         score = 0
         # analyze text word by word
