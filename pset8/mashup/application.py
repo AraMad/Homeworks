@@ -10,8 +10,6 @@ from helpers import lookup
 app = Flask(__name__)
 JSGlue(app)
 
-#export API_KEY=AIzaSyD_IGf-hSqWMB91rR_TXeGskwnMpwDpggw
-
 # ensure responses aren't cached
 if app.config["DEBUG"]:
     @app.after_request

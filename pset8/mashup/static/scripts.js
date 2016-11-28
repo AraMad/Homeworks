@@ -71,13 +71,14 @@ function addMarker(place)
     },
     animation: google.maps.Animation.DROP,
     map: map,
-    icon: '/static/pink-dot.png'
+    label: place.place_name + "," + place.postal_code,
+    icon: {
+            labelOrigin: new google.maps.Point(16, 40),
+            url:  '/static/loveinterest.png'
+    }
     });
     
     marker.addListener('click', function () {
-        //var parametrs = {
-        //geo: place.postal_code
-        //}
     $.getJSON(Flask.url_for("articles"), { geo: place.postal_code })
     .done(function(data, textStatus, jqXHR){
         if (data.length == 0)
