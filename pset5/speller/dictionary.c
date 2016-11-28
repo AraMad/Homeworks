@@ -10,10 +10,10 @@
 #include "dictionary.h"
 
  node* root = NULL;
- int SIZE = 0;
+ int dictionary_size = 0;
 
 //calculate index of element in the node
-int index_m(char a)
+int symbolToIndex(char a)
 {
     return isalpha(a)?(tolower(a)-97):26;
 }
@@ -48,9 +48,9 @@ bool check(const char *word)
 
     for (int i = 0, l = strlen(word); i < l; i++)
     {
-        if (p->children[index_m(word[i])] != NULL)
+        if (p->children[symbolToIndex(word[i])] != NULL)
         {
-            p = p->children[index_m(word[i])];
+            p = p->children[symbolToIndex(word[i])];
         }
         else
         {
@@ -90,20 +90,20 @@ bool load(const char *dictionary)
 	{
 	    if (ch != '\n')
 	    {
-	        if (p->children[index_m(ch)] == NULL)
+	        if (p->children[symbolToIndex(ch)] == NULL)
 	        {
-		        p->children[index_m(ch)] = malloc(sizeof(node));
-		        p = p->children[index_m(ch)];
+		        p->children[symbolToIndex(ch)] = malloc(sizeof(node));
+		        p = p->children[symbolToIndex(ch)];
 	        }
 	        else
 	        {
-	            p = p->children[index_m(ch)];
+	            p = p->children[symbolToIndex(ch)];
 	        }
 	    }
 	    else 
 	    {
 		    p->is_word = 1;
-		    SIZE++;
+		    dictionary_size++;
 		    p = root;
 	    }
 	}
@@ -118,7 +118,7 @@ bool load(const char *dictionary)
  */
 unsigned int size(void)
 {
-    return SIZE;
+    return dictionary_size;
 }
 
 /**
